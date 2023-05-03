@@ -1,4 +1,5 @@
 import { createElement } from "../helper/createelement.js";
+import { decalofNumber } from "../helper/decalNum.js";
 
 export const createCategory = (app) => {
 const category = createElement('section',{
@@ -27,24 +28,26 @@ const createCategoryCard = (data) =>{
 
     const firstSpan = createElement('span',{
         className:'category__title',
-        textContent:`${data.title}`,
+        textContent:data.title,
     });
 
     const secondSpan =createElement('span',{
         className:'category__pairs',
-        textContent:`${data.length} пар`
+        textContent:decalofNumber(data.length, ['пара','пары','пар']),
     });
     itemBtn.append(firstSpan,secondSpan);    
 
     const editBtn = createElement('button',{
-        className:'category__btn category__edit',        
+        className:'category__btn category__edit',  
+        ariaLabel:'редактировать',     
     });
-        editBtn.dataset.ariaLabel = 'редактировать';
+        
 
     const delBtn = createElement('button',{
-        className:'category__btn category__del',        
+        className:'category__btn category__del',
+        ariaLabel:'удалить',       
     });
-    delBtn.dataset.ariaLabel = 'удалить';
+    
 
     item.append(itemBtn,editBtn,delBtn);
 
@@ -53,9 +56,9 @@ const createCategoryCard = (data) =>{
 
 const mount =(data) => {
 categoryList.textContent ='';
-app.append(category);
 const cards = data.map(createCategoryCard);
 categoryList.append(...cards);
+app.append(category);
 };
 
 const unmount = (data) => {

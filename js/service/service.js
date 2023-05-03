@@ -5,7 +5,7 @@ export const fetchCategories = async () => {
     const response = await fetch(`${API_URL}/api/category`);
     if(response.status === 200|| response.status === 201){
         const categories = await response.json();
-        return categories
+        return categories;
     }else{
         const error = await response.json();
         throw error;
@@ -14,4 +14,19 @@ export const fetchCategories = async () => {
     catch(error){
     return{error};
     }
-}
+};
+export const fetchCards = async (id) => {
+    try{
+    const response = await fetch(`${API_URL}/api/category/${id}`);
+    if(response.status === 200|| response.status === 201){
+        const cards = await response.json();
+        return cards;
+    }else{
+        const error = await response.json();
+        throw error;
+    }
+    }
+    catch(error){
+    return{error};
+    }
+};

@@ -45,13 +45,14 @@ headerObj.headerBtn.addEventListener('click', () => {
     headerObj.updateHeaderTitle('новая категория');
     editCategoryObj.mount();
 });
+
 categoryList.addEventListener('click',async ({target}) =>{    
     const categoryItem = target.closest('.category__item');
     if(!categoryItem){
         return;
     }
-    if(target.closest('.category__item')){
-        const dataCards = await fetchCards(categoryItem.dataset.id);
+    if(target.closest('.category__edit')){
+        const dataCards = await fetchCards(categoryItem.dataset.id);        
         allSectionUnmount();
         headerObj.updateHeaderTitle('редактирование');
         editCategoryObj.mount(dataCards);
@@ -61,13 +62,14 @@ categoryList.addEventListener('click',async ({target}) =>{
         console.log('delete');
         return;
     }
-    if(categoryItem){
-        dataCards = await fetchCards(categoryItem.dataset.id);
+    if(categoryItem){               
+        const dataCards = await fetchCards(categoryItem.dataset.id);       
         allSectionUnmount();
         headerObj.updateHeaderTitle(dataCards.title);
         pairsObj.mount(dataCards);
     }
-}); 
+});
+        pairsObj.btnReturn.addEventListener('click',renderIndex) 
 };
 
 

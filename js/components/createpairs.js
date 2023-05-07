@@ -1,4 +1,5 @@
 import { createElement } from "../helper/createelement.js"
+import { shuffleArray } from "../helper/shufflearray.js";
 import { showAlert } from "./showallert.js";
 
 export const createPairs = ( ) => {    
@@ -29,18 +30,16 @@ export const createPairs = ( ) => {
         container.append(btnReturn,btnCard);
         pairs.append(container);
 
-        const cardControler = data => {            
-            let index = 0;
-            front.textContent = data[index][0];
-            back.textContent = data[index][1];
-            const flipCard = () => {
+        let dataCards=[];
+
+        const flipCard = () => {            
             btnCard.classList.add('card__item_flipped');
             btnCard.removeEventListener('click',flipCard);
             setTimeout(() =>{
                 btnCard.classList.remove('card__item_flipped');
                 setTimeout(() => {
-                    index+=1;
-                    if(index ===data.length){
+                    btnCard.index+=1;
+                    if(btnCard.index ===dataCards.length){
                         front.textContent ="Finished Cards";
                         showAlert('let`s begin');
                         setTimeout(() => {
@@ -48,24 +47,33 @@ export const createPairs = ( ) => {
                         },2000);
                         return;
                     }
-                    front.textContent = data[index][0];
-                    back.textContent = data[index][1];
+                    front.textContent = dataCards[btnCard.index][0];
+                    back.textContent = dataCards[btnCard.index][1];
                     setTimeout(() => {
                         btnCard.addEventListener('click',flipCard);
                     },200);
                 },100);
             },1000);
-            };
+            };       
+
+        const cardControler = data => {
+            dataCards = [...data];           
+            btnCard.index = 0;
+            front.textContent = data[btnCard.index][0];
+            back.textContent = data[btnCard.index][1];
+            
             btnCard.addEventListener('click',flipCard);
-        }      
+        };      
 
         const mount = data => {
             app.append(pairs);
-            cardControler(data.pairs)
+            const newData = shuffleArray(data.pairs);
+            cardControler(newData);                                           
         };
 
         const unmount = () => {
             pairs.remove();
+            btnCard.removeEventListener('click',flipCard);            
     };
 
         return {btnReturn,mount,unmount}

@@ -25,6 +25,7 @@ export const createEditCategory = (app) => {
 
     const thead = createElement('thead');
     const trThead = createElement('tr');
+
     const tableHeadCellMain = createElement('th',{
         className:'table__cell',
         textContent:'main',
@@ -66,6 +67,7 @@ export const createEditCategory = (app) => {
             
         const createTr =(dataArr) => {
             const tr =createElement('tr');
+
             const tableCellMain =createElement('td',{
                 className:'table__cell table__cell_one',
                 textContent:dataArr[0] ,
@@ -113,8 +115,29 @@ export const createEditCategory = (app) => {
         editBtnAddRow.addEventListener('click',() => {
             const emptyRow = createTr(['','']);
             tbody.append(emptyRow);
-        });       
+        });
 
+    const parseData = () => {
+        const tableCellMain =document.querySelectorAll('.table__cell_one');
+        const tableCellSecond=document.querySelectorAll('.table__cell_two');        
+        const data ={
+                pairs:[],
+        };
+        for(let i = 0; i <tableCellMain.length; i++){
+            const textMain = tableCellMain[i].textContent.trim();
+            const textSecond = tableCellSecond[i].textContent.trim();
+            if(textMain && textSecond){
+                data.pairs[i]=[textMain,textSecond];
+            }
+            if(editTitle.textContent.trim() && editTitle.textContent!==TITLE){
+                data.title = editTitle.textContent.trim();
+            }
+            if(editBtnSave.dataset.id){
+                data.id = editBtnSave.dataset.id;
+            }
+        }              
+        return data;
+    }
     const mount = (data ={title:TITLE,pairs:[]}) => {
         tbody.textContent ='';
         editTitle.textContent = data.title;
@@ -126,13 +149,15 @@ export const createEditCategory = (app) => {
 
         const rows =data.pairs.map(createTr);        
         const emptyRow = createTr(['','']);
-        tbody.append(...rows,emptyRow);        
-        app.append(editCategory);
+        tbody.append(...rows,emptyRow);
+        
+        editBtnSave.dataset.id = data.id ? data.id :'';       
+        app.append(editCategory);        
     };
 
     const unmount = () => {
         editCategory.remove();
     };
 
-    return {unmount,mount};
+    return {unmount,mount,parseData,editBtnSave,editBtnCancel};
 };

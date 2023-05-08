@@ -78,7 +78,7 @@ headerObj.headerBtn.addEventListener('click', () => {
     else{
         setTimeout(() => {
         alert('continue please');
-        },1000);
+        },500);
     } 
 });
 });
